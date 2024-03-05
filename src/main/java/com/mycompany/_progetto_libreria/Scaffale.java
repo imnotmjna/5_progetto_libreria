@@ -4,6 +4,9 @@
  */
 package com.mycompany._progetto_libreria;
 
+import eccezioni.EccezionePosizioneNonValida;
+import eccezioni.EccezionePosizioneOccupata;
+
 /**
  *Rappresenta uno scaffale costituito da
  * NUM_RIPIANI mensole, ciascuna delle quali può contenere dei libri
@@ -27,7 +30,7 @@ public class Scaffale
         }
     }
     
-    public Scaffale (Scaffale scaf)
+    public Scaffale (Scaffale scaf) 
     {
         ripiani=new Mensola[NUM_RIPIANI];
         Libro lib;
@@ -220,8 +223,5 @@ public class Scaffale
             }
             return elencoTitoliAutore;
         }
-        
-        
-        
         
 }
