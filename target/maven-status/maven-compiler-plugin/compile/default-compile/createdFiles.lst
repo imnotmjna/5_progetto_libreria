@@ -1,0 +1,11 @@
+com\mycompany\_progetto_libreria\Mensola.class
+eccezioni\EccezionePosizioneOccupata.class
+com\mycompany\_progetto_libreria\App.class
+com\mycompany\_progetto_libreria\Libro.class
+com\mycompany\_progetto_libreria\Scaffale.class
+eccezioni\EccezionePosizioneVuota.class
+utilita\Menu.class
+eccezioni\EccezioneRipianoNonValido.class
+utilita\Ordinatore.class
+eccezioni\EccezionePosizioneNonValida.class
+utilita\ConsoleInput.class
