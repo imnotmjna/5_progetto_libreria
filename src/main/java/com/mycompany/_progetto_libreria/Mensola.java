@@ -25,9 +25,20 @@ public class Mensola
         Libro lib;
         for(int i=0;i<mensola.getNumMaxVolumi();i++)
         {
-            lib=mensola.getVolume(i);
-            if(lib!=null)
+            try 
+            {
+                lib=mensola.getVolume(i);
                 volumi[i]=lib;
+            } 
+            catch (EccezionePosizioneNonValida e)
+            {
+                //non fare nulla, non avverrà mai
+            }
+            catch (EccezionePosizioneVuota ex) 
+            {
+                //non fare nulla
+            }
+            
         }
     }
     /**
@@ -63,7 +74,7 @@ public class Mensola
         se la posizione è già occupata --> return -2
         se il libro viene posizionato --> return posizione 
      */
-    public int setVolume(Libro volume, int posizione) throws EccezionePosizioneNonValida, EccezionePosizioneOccupata
+    public void setVolume(Libro volume, int posizione) throws EccezionePosizioneNonValida, EccezionePosizioneOccupata
     {
         /*
         if (posizione<0 || posizione>=NUM_MAX_VOLUMI)
@@ -76,7 +87,7 @@ public class Mensola
                 throw new EccezionePosizioneOccupata();
         
             volumi[posizione]=new Libro(volume);
-            return posizione;
+            //return posizione;
         }
         catch(ArrayIndexOutOfBoundsException e)
         {
@@ -93,7 +104,7 @@ public class Mensola
      * se la posizione è vuota --> return null
        se la posizione<0 o >= NUM_MAX_LIBRI (non valida) --> return null
      */
-    public Libro getVolume(int posizione)
+    public Libro getVolume(int posizione) throws EccezionePosizioneNonValida, EccezionePosizioneVuota
     {
         /*if(posizione <0 || posizione>=NUM_MAX_VOLUMI)
             return null;
@@ -106,12 +117,19 @@ public class Mensola
         {
             return new Libro(volumi[posizione]);
         }
-        catch(ArrayIndexOutOfBoundsException | NullPointerException e)
+        catch(ArrayIndexOutOfBoundsException e)
         {
-            return null;
+            //se la posizione non è valida sollevo l'eccezione
+            throw new EccezionePosizioneNonValida();
+        }
+        
+  
+        catch(NullPointerException e)
+        {
+            //se la posizione non contiene un libro
+            throw new EccezionePosizioneVuota();
         }
     }
-   
     /**
      * Libera (inserendo null) la posizione "posizione" e restituisce il numero della
     posizione "liberata"
@@ -119,7 +137,7 @@ public class Mensola
     se la posizione è già vuota --> return -2
      */
     
-    public int rimuoviVolume(int posizione)
+    public void rimuoviVolume(int posizione) throws EccezionePosizioneNonValida, EccezionePosizioneVuota
     {
         /*
         if (posizione<0 || posizione>=NUM_MAX_VOLUMI)
@@ -129,13 +147,13 @@ public class Mensola
         try
         {
             if (volumi[posizione]==null)
-                return -2;
+                throw new EccezionePosizioneVuota();
             volumi[posizione]=null;
-            return posizione;
+            //return posizione;
         }
         catch(ArrayIndexOutOfBoundsException e)
         {
-            return -1;
+            throw new EccezionePosizioneNonValida();
         }
     }
     

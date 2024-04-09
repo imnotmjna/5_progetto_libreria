@@ -4,76 +4,103 @@
  */
 package utilita;
 
-import java.util.*;
+import java.io.IOException;
 
 /**
- *
- * @author Studente
+ *rappresenta un menu costituito da un elenco di voci Ad ogni voce è associato un numero intero
+ * Il metodo elencoVoci è un array di stringhe dove ogni elemento corrisponde a una voce del menu
+ * Tali numeri vanno da 0 a numeroVoci -1
+ * L'utente scegle il numero della voce.
+ * @author Mina
+ * rappresenta un menu costituito da un elenco di voci. Ad ogni voce è associato un numero intero.
+ * Il metodo elencoVoci è un array di stringhe dove ogni elemento corrisponde a una voce del menu.
+ * Tali numeri vanno da 0 a numeroVoci -1. L'utente scegle il numero della voce.
+ * Esempio:
+ *  (0)Esci
+    (1)Fai questo..
+    (2)Fai quello..
+    Scegli-->1
+S   celta: 1
  */
-public class Menu 
+public class Menu
 {
-    private String[] elencoVoci; //ogni stringa è una voce del menu 
+    private String[] elencoVoci;
     private int numeroVoci;
-
     
- public Menu(String[] elenco)
- {
-    numeroVoci=elenco.length; //imposto il numero di voci del menu
-    elencoVoci=new String[numeroVoci];
-    
-    //copio ciascuna voce del parametro elenco nell'attributo elencoVoci
-    for (int i=0;i<numeroVoci;i++)
+    /**
+     * Costruttore
+     * @param elenco rappresenta le voci del menu
+     * Esempio: elenco={"Esci","Fai questo..","Fai quello.."}
+     */
+    public Menu(String[] elenco)
     {
-        elencoVoci[i]=elenco[i];
+        numeroVoci=elenco.length;
+        elencoVoci=new String[numeroVoci];
+        for(int i=0;i<numeroVoci;i++)
+        {
+            elencoVoci[i]=elenco[i]; 
+        }
     }
- }
-
- public void visualizzaMenu()
- {
-    for (int i=0;i<numeroVoci;i++)
+    /**
+     * Metodo che consente di scegliere una voce fra quelle del menu.
+     * L'utente può selezionare un numero intero corrispondente alle voci del menu.
+     * Controllo di input se è numerico e valido (compreso fra le voci del menu).
+     * @return la scelta fatta
+     */
+    public int sceltaMenu()
     {
-        System.out.println(elencoVoci[i]);
-    }  
- }
- 
- public int sceltaMenu()
- {
-     Scanner tastiera=new Scanner(System.in);
-     String input;
-     boolean inputOK=false;
-     int scelta=0;
-     String input2="0";
-     
-     do
-     {
-        inputOK=true;
-        visualizzaMenu();
-        System.out.println("Scegli: ");
-        input=tastiera.nextLine();
-     
-        if(input.charAt(0)<'0' || input.charAt(0)>'9')
+        //Scanner tastiera=new Scanner(System.in);
+        ConsoleInput tastiera=new ConsoleInput();
+        int scelta = 0;
+        String sceltaStringa;
+        boolean sceltaOK=true;
+        
+        do
         {
-            System.out.println("Input non corretto");
-            inputOK=false;
-            
-        }
-        else
-        {
-            input2=input2+input.charAt(0);
-            scelta=Integer.parseInt(input2);
-            if(scelta<0 || scelta>=numeroVoci)
+            sceltaOK=true;
+            visualizzaMenu();
+            System.out.print("Scegli-->");
+          
+           
+            try 
             {
-                System.out.println("La voce scelta non è prevista");
-                inputOK=false;
+                scelta=tastiera.readInt();
+            } 
+            catch (IOException ex) 
+            {
+                System.out.println("Impossibile leggere da tastiera");
+                sceltaOK=false;
+            } 
+            catch (NumberFormatException ex) 
+            {
+                System.out.println("Formato input non conforme");
+                sceltaOK=false;
             }
-        }
             
-     }while(!inputOK);
-     
-     return scelta;
-     
-     
-         
- }
- 
+            //controlliamo che il numero inserito dall'utente sia compreso fra 0 e numeroVoci-1
+            if(sceltaOK)
+            {
+                if(scelta<0||scelta>=numeroVoci)
+                {
+                    sceltaOK=false;
+                    System.out.println("Scelta non valida! Inserire un numero compreso tra 0 e "+(numeroVoci-1));
+                }
+            }
+    
+        }while(!sceltaOK);
+        return scelta;
+          
+    }
+    
+    /**
+     * Visualizza l'elenco delle voci del menu
+     */
+    public void visualizzaMenu()
+    {
+        for(int i=0;i<numeroVoci;i++)
+        {
+            System.out.println("("+i+")"+elencoVoci[i]);
+        }
+    }
+    
 }
